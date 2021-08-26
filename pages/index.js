@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
 import { ListGroup } from "react-bootstrap";
-import Loading from "../components/loading";
 import styles from "../styles/Category.module.css";
 
 export default function Home({ items }) {
@@ -27,8 +25,9 @@ export default function Home({ items }) {
   );
 }
 
+// 
 export async function getStaticProps() {
-  const res = await fetch("http://127.0.0.1:8000/featured-products");
+  const res = await fetch("http://127.0.0.1:8000/api/featured-products");
   const items = await res.json();
 
   return {

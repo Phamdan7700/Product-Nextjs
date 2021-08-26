@@ -1,18 +1,21 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
 import Loading from "../../components/loading";
 
-// import style from "../../styles/Category.module.css";
-
 function Product({ item }) {
-  // if (error) return <div>Failed to load</div>;
-  // if (!item) return <div>Loading...</div>;
-
-  return (
+  return item ? (
     <>
       <h1>Product</h1>
-      {item.name}
+      <h2>Product name: {item.name}</h2>
+      <p> &#127814; &#127814; &#127814; &#127814; &#127814;</p>
+      <p> &#127814; &#127814; &#127814; &#127814; &#127814;</p>
+      <p> &#127814; &#127814; &#127814; &#127814; &#127814;</p>
+      <p>&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;</p>
+      <p>&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;</p>
+      <p>&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;</p>
+      <p>&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;</p>
+      <p>&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;</p>
     </>
+  ) : (
+    <Loading />
   );
 }
 
@@ -24,7 +27,7 @@ export async function getServerSideProps(context) {
 
   const res = await fetch(`http://127.0.0.1:8000/product/${id}`);
   const item = await res.json();
-  
+
   return {
     props: {
       item,

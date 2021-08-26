@@ -11,8 +11,7 @@ const fetcher = (url) =>
 
 function Sidebar() {
   const router = useRouter();
-  const {id} = router.query;
-  const [activeIndex, setActiveIndex] = useState(id);
+  const { id } = router.query;
   const { data, error } = useSWR(
     "http://localhost:8000/api/categories",
     fetcher
@@ -33,16 +32,9 @@ function Sidebar() {
         </ListGroup.Item>
         {data.map(function (item, index) {
           return (
-            <ListGroup.Item
-              action
-              key={index}
-              active={activeIndex == item.id}
-              onClick={() => {
-                setActiveIndex(item.id);
-              }}
-            >
+            <ListGroup.Item action key={index} active={item.id == id}>
               <Link href={`/category/${item.id}/products?page=1`}>
-                <a style={{display:'block'}}>{item.name}</a>
+                <a style={{ display: "block" }}>{item.name}</a>
               </Link>
             </ListGroup.Item>
           );

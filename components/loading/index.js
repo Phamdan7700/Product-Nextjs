@@ -2,7 +2,7 @@ import { Spinner } from "react-bootstrap";
 
 function Loading() {
   return (
-    <div className="d-flex position-fixed h-100 w-100" style={{ left: 0 }}>
+    <div className="d-flex w-100" style={{ marginTop: '25%'}}>
       <div className="m-auto ">
         <Spinner animation="grow" variant="primary" />
         <Spinner animation="grow" variant="secondary" />
