@@ -1,31 +1,34 @@
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import Loading from "../../../components/loading";
 import PaginationCustom from "../../../components/pagination";
+import axiosClient from "../../api/axiosClient";
 
 function Products() {
   const router = useRouter();
   const { id, page } = router.query;
   const [dataResponse, setDataResponse] = useState(null);
+  const [error, setError] = useState(null);
 
-// 
   useEffect(() => {
     if (id) {
-      const url = `http://127.0.0.1:8000/api/category/${id}/products?page=${page}`;
-      axios.get(url).then((res) => setDataResponse(res.data));
+      const url = `/category/${id}/products?page=${page}`;
+      axiosClient
+        .get(url, { params: { page } })
+        .then((res) => setDataResponse(res.data))
+        .catch((error) => setError(error));
     }
-  }, [page, id]);
-
-// 
+  }, [id, page]);
+  
+  if (error) return <div>{error.message}</div>;
   if (!dataResponse) return <Loading />;
 
-  const { data, current_page, last_page } = dataResponse;
-  const setCurrentPage = function (number) {
-    router.push(`/category/${id}/products?page=${number}`);
-  };
+  const {
+    data,
+    meta: { current_page, last_page },
+  } = dataResponse;
 
   return (
     <>
@@ -42,9 +45,13 @@ function Products() {
         })}
       </ListGroup>
       <PaginationCustom
-        current_page={current_page}
-        last_page={last_page}
-        setCurrentPage={setCurrentPage}
+        activePage={current_page}
+        lastPage={last_page}
+        setPage={(number) => {
+          router.push({
+            query: { id: id, page: number },
+          });
+        }}
       />
     </>
   );

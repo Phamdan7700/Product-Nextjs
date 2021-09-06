@@ -1,17 +1,14 @@
 import { Pagination } from "react-bootstrap";
 
-function PaginationCustom({ setCurrentPage, current_page, last_page }) {
-  // pagination
+function PaginationCustom({ activePage, lastPage, setPage }) {
+  let active = activePage;
   let items = [];
-
-  for (let number = 1; number <= last_page; number++) {
+  for (let number = 1; number <= lastPage; number++) {
     items.push(
       <Pagination.Item
         key={number}
-        active={number === current_page}
-        onClick={() => {
-          setCurrentPage(number);
-        }}
+        active={number === active}
+        onClick={() => setPage(number)}
       >
         {number}
       </Pagination.Item>
@@ -20,30 +17,12 @@ function PaginationCustom({ setCurrentPage, current_page, last_page }) {
 
   return (
     <div className="mt-5 d-flex justify-content-center">
-      <Pagination size="md">
-        <Pagination.First
-          onClick={() => {
-            setCurrentPage(1);
-          }}
-        />
-        <Pagination.Prev
-          onClick={() => {
-            setCurrentPage(current_page - 1);
-          }}
-          disabled={current_page <= 1}
-        />
+      <Pagination>
+      <Pagination.First onClick={()=>setPage(1)}/>
+      <Pagination.Prev onClick={()=>setPage(activePage - 1)} disabled={activePage === 1}/>
         {items}
-        <Pagination.Next
-          onClick={() => {
-            setCurrentPage(current_page + 1);
-          }}
-          disabled={current_page == last_page}
-        />
-        <Pagination.Last
-          onClick={() => {
-            setCurrentPage(last_page);
-          }}
-        />
+      <Pagination.Next onClick={()=>setPage(activePage + 1)} disabled={activePage === lastPage}/>
+      <Pagination.Last onClick={()=>setPage(lastPage)}/>
       </Pagination>
     </div>
   );

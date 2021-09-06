@@ -1,10 +1,12 @@
 import Loading from "../../components/loading";
 
-function Product({ item }) {
-  return item ? (
+function Product({ apiData }) {
+  const { data } = apiData;
+
+  return  (
     <>
       <h1>Product</h1>
-      <h2>Product name: {item.name}</h2>
+      <h2>Product name: {data.name}</h2>
       <p> &#127814; &#127814; &#127814; &#127814; &#127814;</p>
       <p> &#127814; &#127814; &#127814; &#127814; &#127814;</p>
       <p> &#127814; &#127814; &#127814; &#127814; &#127814;</p>
@@ -14,9 +16,7 @@ function Product({ item }) {
       <p>&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;</p>
       <p>&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;&#127813;</p>
     </>
-  ) : (
-    <Loading />
-  );
+  ) 
 }
 
 export default Product;
@@ -24,13 +24,18 @@ export default Product;
 export async function getServerSideProps(context) {
   const { params } = context;
   const { id } = params;
-
-  const res = await fetch(`http://127.0.0.1:8000/product/${id}`);
-  const item = await res.json();
+  const url = `${process.env.API_SERVER}/product/${id}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    return {
+      notFound: true,
+    };
+  }
+  const apiData = await res.json();
 
   return {
     props: {
-      item,
+      apiData,
     },
   };
 }
